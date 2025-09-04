@@ -6,11 +6,11 @@ Currently running on Python3
 
 IMPORTANT TO DO BEFORE LAUNCHING THE SCRIPT:
 
-  Use CH2
+  -Use CH2
   
-  In the scope, go to File->Save Waveform->Auto Save and tick the box next to "Waveform"
+  -In the scope, go to File->Save Waveform->Auto Save and tick the box next to "Waveform"
   
-  Take note of the number in file name
+  -Take note of the number in file name
 
 IN THE SCRIPT:
 
