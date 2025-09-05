@@ -4,6 +4,8 @@ Script to read LeCroy waverunner 8104 oscilloscope. Currently running on Python3
 
 IMPORTANT TO DO BEFORE LAUNCHING THE SCRIPT:
 
+  -Create two folders in the directory, called "runs" and "csvs"
+
   -Use CH2 & CH3 (if you only want to use one channel, use CH2 and comment lines on acquisition.py as explained in the beginnin of that script)
 
   -Activate CH2 & CH3 (only CH2 for one channel)
