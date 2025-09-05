@@ -1,3 +1,7 @@
+###the script acquires waveforms from CH2 and CH3
+###if you only want to use one channel (CH2) please comment lines 24, 25, 26, 27, 28, 46, 47
+
+
 import pyvisa
 import time
 
@@ -52,7 +56,7 @@ if __name__ == '__main__':
     #set sequence mode options
     lecroy.write("MEMORY_SIZE 500")
     lecroy.write("SEQ ON")
-    lecroy.write("vbs app.Acquisition.Horizontal.NumSegments = 5000")
+    lecroy.write("vbs app.Acquisition.Horizontal.NumSegments = 2500")
 
     #set autosave options
     lecroy.write("vbs app.SaveRecall.AutoSave = \"Wrap\"")
@@ -67,3 +71,4 @@ if __name__ == '__main__':
         transfer(lecroy)
         stop_time = time.time()
         print("Total transfer time: ", stop_time - start_time)
+
