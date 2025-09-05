@@ -14,8 +14,8 @@ IMPORTANT TO DO BEFORE LAUNCHING THE SCRIPT:
 
 IN THE SCRIPT:
 
-  -Write the number on a new line of the runs.txt file
+  -Write the number on a new line of the packets.txt file
 
-PLEASE BEAR IN MIND: in the runs.txt file, the numbers indicate the first "package" of waveforms of each spill (eg. if runs.txt is 0 4 8 this means spill1->files from 0 to 3, spill2->files from 4 to 7...)
+PLEASE BEAR IN MIND: in the packets.txt file, the numbers indicate the first "package" of waveforms for each spill (eg. if runs.txt is 0 4 8 this means spill1->files from 0 to 3, spill2->files from 4 to 7...). Spills are continuous and not resetted as run changes (at least in this file).
 
 TO SEND OUT TRIGGER SIGNAL FROM OSCILLOSCOPE FROM THE AUX PORT: go to Utilities->Utilities setup->Aux output and press "Trigger Out" in the "Use Auxiliary Output For" window
