@@ -7,7 +7,7 @@ import time
 
 IPADDRESS = "169.254.16.17"                                                 # IP address of the oscilloscope
 
-def transfer(lecroy):
+def transfer(lecroy, starting_time):
     device = 'HDD'                                                          # to save from the HDD of the oscilloscope
     runs_database = "runs.txt"                                              # file to keep track of packages of runs
 
@@ -71,4 +71,5 @@ if __name__ == '__main__':
         transfer(lecroy)
         stop_time = time.time()
         print("Total transfer time: ", stop_time - start_time)
+
 
