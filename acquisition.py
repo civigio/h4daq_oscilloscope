@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     try:
         while True:
-            run_number = input("Enter run number...")
+            run_number = int(input("Enter run number..."))
             input("Press to start acquisition...")
             try:
                 spill_number = 1
@@ -77,10 +77,10 @@ if __name__ == '__main__':
                     lecroy.write("TRIG_MODE NORM")
                     time.sleep(5.2)
                     lecroy.write("TRIG_MODE STOP")
-                    transfer(lecroy, spill_number)
+                    transfer(lecroy, spill_number,run_number)
                     stop_time = time.time()
                     print("Total transfer time: ", stop_time - start_time)
-                    i += 1
+                    spill_number += 1
             except KeyboardInterrupt:
                 pass
     except KeyboardInterrupt:
