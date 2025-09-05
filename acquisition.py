@@ -64,17 +64,24 @@ if __name__ == '__main__':
     #set autosave options
     lecroy.write("vbs app.SaveRecall.AutoSave = \"Wrap\"")
 
-    run_number = input("Enter run number...")
-    input("Press to start acquisition...")
-    while True:
-        spill_number = input("Spill number...")
-        start_time = time.time()
-        lecroy.write("TRIG_MODE NORM")
-        time.sleep(5.2)
-        lecroy.write("TRIG_MODE STOP")
-        transfer(lecroy, spill_number)
-        stop_time = time.time()
-        print("Total transfer time: ", stop_time - start_time)
 
-
-
+    try:
+        while True:
+            run_number = input("Enter run number...")
+            input("Press to start acquisition...")
+            try:
+                while True:
+                    spill_number = input("Spill number...")
+                    start_time = time.time()
+                    lecroy.write("TRIG_MODE NORM")
+                    time.sleep(5.2)
+                    lecroy.write("TRIG_MODE STOP")
+                    transfer(lecroy, spill_number)
+                    stop_time = time.time()
+                    print("Total transfer time: ", stop_time - start_time)
+            except KeyboardInterrupt:
+                pass
+    except KeyboardInterrupt:
+        pass
+    
+    print("Exiting...")
