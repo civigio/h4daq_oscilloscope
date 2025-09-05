@@ -1,5 +1,5 @@
 ###the script acquires waveforms from CH2 and CH3
-###if you only want to use one channel (CH2) please comment lines 24, 25, 26, 27, 28, 46, 47
+###if you only want to use one channel (CH2) please comment lines 27, 28, 29, 30, 31, 49, 50
 
 
 import pyvisa
@@ -7,22 +7,25 @@ import time
 
 IPADDRESS = "169.254.16.17"                                                 # IP address of the oscilloscope
 
-def transfer(lecroy, starting_time):
+def transfer(lecroy, spill_number):
     device = 'HDD'                                                          # to save from the HDD of the oscilloscope
     runs_database = "runs.txt"                                              # file to keep track of packages of runs
 
     with open(runs_database, "r") as file:
         run_number = int(file.readlines()[-1].strip())                      # first file of new run
 
-    for _ in range(100):
-        filepath = f"D:\\BTL_testbeam\\C2--runx--{run_number:05d}.trc"      # path on the oscilloscope
+    for i in range(100):
+        # if run_number < 10000, use 5 digit zfill, if not use the number as it is
+        run_str = f"{run_number:05d}" if run_number < 10000 else str(run_number)
+
+        filepath = f"D:\\BTL_testbeam\\C2--runx--{run_str}.trc"             # path on the oscilloscope
         lecroy.write(f"TRFL? DISK,{device},FILE,{filepath}")                # retrieve the file in raw format
         raw_data = lecroy.read_raw()
         if len(raw_data) > 1:                                               # check if the file exists
-            with open(f'raws/raw_C2_{run_number:05d}.trc', 'wb') as f:      # save the file locally
+            with open(f'raws/raw_C2_{spill_number:07d}_{i}.trc', 'wb') as f:      # save the file locally
                 f.write(bytearray(raw_data))                                
-            with open(f'raws/raw_C3_{run_number:05d}.trc', 'wb') as g:
-                filepath2 = f"D:\\BTL_testbeam\\C3--runx--{run_number:05d}.trc"
+            with open(f'raws/raw_C3_{spill_number:07d}_{i}.trc', 'wb') as g:
+                filepath2 = f"D:\\BTL_testbeam\\C3--runx--{run_str}.trc"
                 lecroy.write(f"TRFL? DISK,{device},FILE,{filepath2}")
                 raw_data2 = lecroy.read_raw()
                 g.write(bytearray(raw_data2))
@@ -64,12 +67,14 @@ if __name__ == '__main__':
 
     while True:
         input("Press Enter to acquire...")
+        spill_number = input("Run number...")
         start_time = time.time()
         lecroy.write("TRIG_MODE NORM")
         time.sleep(5.2)
         lecroy.write("TRIG_MODE STOP")
-        transfer(lecroy)
+        transfer(lecroy, spill_number)
         stop_time = time.time()
         print("Total transfer time: ", stop_time - start_time)
+
 
 
