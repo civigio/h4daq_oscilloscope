@@ -70,8 +70,9 @@ if __name__ == '__main__':
             run_number = input("Enter run number...")
             input("Press to start acquisition...")
             try:
+                spill_number = 1
                 while True:
-                    spill_number = input("Spill number...")
+                    input("Waiting for SPS trigger signal...")
                     start_time = time.time()
                     lecroy.write("TRIG_MODE NORM")
                     time.sleep(5.2)
@@ -79,9 +80,11 @@ if __name__ == '__main__':
                     transfer(lecroy, spill_number)
                     stop_time = time.time()
                     print("Total transfer time: ", stop_time - start_time)
+                    i += 1
             except KeyboardInterrupt:
                 pass
     except KeyboardInterrupt:
         pass
     
     print("Exiting...")
+
