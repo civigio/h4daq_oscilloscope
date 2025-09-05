@@ -7,31 +7,31 @@ import time
 
 IPADDRESS = "169.254.16.17"                                                 # IP address of the oscilloscope
 
-def transfer(lecroy, spill_number):
+def transfer(lecroy, spill_number, run_number):
     device = 'HDD'                                                          # to save from the HDD of the oscilloscope
-    runs_database = "runs.txt"                                              # file to keep track of packages of runs
+    packets_database = "packets.txt"                                              # file to keep track of packages of runs
 
-    with open(runs_database, "r") as file:
-        run_number = int(file.readlines()[-1].strip())                      # first file of new run
+    with open(packets_database, "r") as file:
+        packet_number = int(file.readlines()[-1].strip())                      # first file of new run
 
     for i in range(100):
-        # if run_number < 10000, use 5 digit zfill, if not use the number as it is
-        run_str = f"{run_number:05d}" if run_number < 10000 else str(run_number)
+        # if packet_number < 10000, use 5 digit zfill, if not use the number as it is
+        pack_str = f"{packet_number:05d}" if packet_number < 10000 else str(packet_number)
 
-        filepath = f"D:\\BTL_testbeam\\C2--runx--{run_str}.trc"             # path on the oscilloscope
+        filepath = f"D:\\BTL_testbeam\\C2--runx--{pack_str}.trc"             # path on the oscilloscope
         lecroy.write(f"TRFL? DISK,{device},FILE,{filepath}")                # retrieve the file in raw format
         raw_data = lecroy.read_raw()
         if len(raw_data) > 1:                                               # check if the file exists
-            with open(f'raws/raw_C2_{spill_number:07d}_{i}.trc', 'wb') as f:      # save the file locally
+            with open(f'raws/raw_C2_{run_number:07d}_{spill_number:07d}_{i}.trc', 'wb') as f:      # save the file locally
                 f.write(bytearray(raw_data))                                
-            with open(f'raws/raw_C3_{spill_number:07d}_{i}.trc', 'wb') as g:
-                filepath2 = f"D:\\BTL_testbeam\\C3--runx--{run_str}.trc"
+            with open(f'raws/raw_C3_{run_number:07d}_{spill_number:07d}_{i}.trc', 'wb') as g:
+                filepath2 = f"D:\\BTL_testbeam\\C3--runx--{pack_str}.trc"
                 lecroy.write(f"TRFL? DISK,{device},FILE,{filepath2}")
                 raw_data2 = lecroy.read_raw()
                 g.write(bytearray(raw_data2))
-            run_number += 1
-    with open(runs_database, "a") as file:
-        file.write('\n' + str(run_number))                                  # writes first package of next run
+            packet_number += 1
+    with open(packets_database, "a") as file:
+        file.write('\n' + str(packet_number))                                  # writes first package of next run
 
 if __name__ == '__main__':
     rm = pyvisa.ResourceManager()                                           # set VISA communication
@@ -64,10 +64,10 @@ if __name__ == '__main__':
     #set autosave options
     lecroy.write("vbs app.SaveRecall.AutoSave = \"Wrap\"")
 
-
+    run_number = input("Enter run number...")
+    input("Press to start acquisition...")
     while True:
-        input("Press Enter to acquire...")
-        spill_number = input("Run number...")
+        spill_number = input("Spill number...")
         start_time = time.time()
         lecroy.write("TRIG_MODE NORM")
         time.sleep(5.2)
